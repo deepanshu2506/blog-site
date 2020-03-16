@@ -1,0 +1,130 @@
+.content {
+  width: 70%;
+  //   background-color: #ccc;
+  height: 100vh;
+  //   margin-top: 8vh;
+  margin: 8vh auto 0 auto;
+  display: flex;
+  .post-area {
+    // border: 1px solid red;
+    padding: 40px 5px 5px 0;
+    width: 70%;
+    // height: 100vh;
+    // background-color: #ccc;
+
+    .post {
+      width: 90%;
+      margin: 30px;
+      border: 1px solid #eee;
+      background-color: #feffff;
+      border-radius: 5px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      align-content: flex-start;
+      box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
+      .type {
+        padding: 5px 0;
+        font-size: 18px;
+        color: #777;
+      }
+      .title {
+        font-size: 24px;
+        font-weight: 500;
+        padding-left: 10px;
+        // border: 1px solid green;
+      }
+      .content-container {
+        width: 100%;
+        // border: 1px solid green;
+        // height: 210px;
+        display: flex;
+        box-sizing: border-box;
+        // padding-bottom: 10px;
+        .post-content {
+          text-align: justify;
+          box-sizing: border-box;
+          width: 70%;
+          margin-top: 5px;
+          //   border: 1px solid red;
+          margin-left: 0;
+          padding-left: 10px;
+          //   height: 120px;
+          flex-direction: row;
+          a {
+            padding: 5px 10px;
+          }
+          .post-info {
+            // border: 1px solid red;
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            vertical-align: center;
+          }
+          .avatar {
+            width: 40px;
+            border: 1px solid #888;
+            height: 40px;
+            margin: 10px 10px 10px 0;
+            border-radius: 50%;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            padding: 7px;
+            box-sizing: border-box;
+            svg {
+              height: 100%;
+              width: 100%;
+              color: #444;
+            }
+            background-color: #eee;
+          }
+          .user-info {
+            // border: 1px solid green;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            vertical-align: center;
+            .user-name {
+              //   border: 1px solid red;
+              height: 20px;
+              vertical-align: center;
+              margin-top: 10px;
+              //   font-weight: 400;
+            }
+            .date-time {
+              //   margin-top: -20px;
+              color: #888;
+              //   border: 1px solid red;
+              span {
+                margin-left: 20px;
+              }
+            }
+          }
+        }
+
+        img {
+          border-radius: 5px;
+          margin: 0 0 0 30px;
+          //   padding-left: 20px;
+          max-height: 10vw;
+          max-width: 10vw;
+          margin-bottom: 10px;
+          box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+  }
+
+  .right-pane {
+    z-index: -1;
+    height: 85vh;
+    width: 22%;
+    margin-top: 40px;
+    position: fixed;
+    right: 13.5vw;
+    // right: 15%;
+    background-color: lightcoral;
+  }
+}
