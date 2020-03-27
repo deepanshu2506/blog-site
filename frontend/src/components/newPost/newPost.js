@@ -1,8 +1,10 @@
 import React from "react";
 import "./style.scss";
 import _ from "lodash";
+import shortid from "shortid";
 import Textarea from "react-textarea-autosize";
 import { IoMdImages } from "react-icons/io";
+
 // import image from "./23.jpg";
 class NewPost extends React.Component {
   constructor(props) {
@@ -20,10 +22,12 @@ class NewPost extends React.Component {
     );
     this.state = {
       images: new Array(),
-      focusedInput: 0,
+      focusedInput: 1,
       textareaCount: 2,
       blog: [textarea],
-      textInput: []
+      textInput: [],
+      ordering: [1],
+      id: shortid.generate()
     };
   }
 
@@ -44,7 +48,6 @@ class NewPost extends React.Component {
         text: e.target.value
       });
     }
-
     this.setState({ textInput });
   };
 
@@ -66,11 +69,12 @@ class NewPost extends React.Component {
           });
           // console.log(this.state);
         }}
+        // value={`input${this.state.textareaCount}`}
         onChange={this.handleContentChange}
         autoFocus={true}
       />
     );
-    const { blog } = this.state;
+    const { blog, ordering, images } = this.state;
     let index = 0;
     if (this.state.focusedInput !== 0) {
       index = _.findIndex(blog, item => {
@@ -78,12 +82,18 @@ class NewPost extends React.Component {
         return parseInt(item.props.number) == parseInt(this.state.focusedInput);
       });
     }
-
+    console.log(this.state.focusedInput);
+    const orderingIndex = ordering.findIndex(
+      item => item == this.state.focusedInput
+    );
+    ordering.splice(orderingIndex + 1, 0, this.state.textareaCount);
+    console.log(ordering);
     // console.log(this.state.focusedInput);
 
     // console.log(index);
 
     const imgTempUrl = URL.createObjectURL(event.target.files[0]);
+    images.push({ number: this.state.textareaCount, url: imgTempUrl });
     const imageComponent = (
       <div className="img-container">
         <img number={0} src={imgTempUrl} />
@@ -96,10 +106,31 @@ class NewPost extends React.Component {
         url: imgTempUrl,
         location: this.state.focusedInput,
         blog,
+        ordering,
+        images,
         textareaCount: this.state.textareaCount++
       })
     });
     // console.log(this.refs);
+  };
+
+  savePost = () => {
+    const { ordering, textInput, images } = this.state;
+    const blogPost = [];
+    for (const item of ordering) {
+      const text = _.find(textInput, a => a.number == item);
+      const image = _.find(images, a => a.number == item);
+      if (image) blogPost.push(image);
+
+      if (text) blogPost.push(text);
+    }
+
+    console.log(blogPost);
+
+    const post = {
+      title: this.state.postTitle,
+      body: blogPost
+    };
   };
 
   render() {
@@ -131,15 +162,14 @@ class NewPost extends React.Component {
             autoFocus
           />
         </div>
-        {/* {this.state.blog.map(item => {
-          console.log(item);
-        })} */}
-        {/* <div className="img-container">
-          <img number={0} src={image} />
-        </div> */}
-        {this.state.blog.map(item => {
-          return item;
-        })}
+        <div>
+          {this.state.blog.map(item => {
+            return item;
+          })}
+        </div>
+        <button className="save" onClick={this.savePost}>
+          Publish
+        </button>
       </div>
     );
   }
