@@ -91,9 +91,19 @@ class NewPost extends React.Component {
     // console.log(this.state.focusedInput);
 
     // console.log(index);
+    const file = event.target.files[0];
+    const imgTempUrl = URL.createObjectURL(file);
+    var fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    const { textareaCount } = this.state;
+    fileReader.onloadend = function() {
+      images.push({
+        number: textareaCount,
+        name: file.name,
+        image: fileReader.result
+      });
+    };
 
-    const imgTempUrl = URL.createObjectURL(event.target.files[0]);
-    images.push({ number: this.state.textareaCount, url: imgTempUrl });
     const imageComponent = (
       <div className="img-container">
         <img number={0} src={imgTempUrl} />
@@ -129,7 +139,7 @@ class NewPost extends React.Component {
 
     const post = {
       title: this.state.postTitle,
-      body: blogPost
+      body: { ordering, textInput, images }
     };
   };
 
