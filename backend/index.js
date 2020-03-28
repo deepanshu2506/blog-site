@@ -3,6 +3,7 @@ const graphqlHTTP = require("express-graphql");
 const mongoose = require("mongoose");
 
 const articlesSchema = require("./schemas/articles").schema;
+const userSchema = require("./schemas/User").schema;
 
 mongoose.connect("mongodb+srv://blog:blog123@cluster0-t1t7l.mongodb.net/blog");
 mongoose.connection.once("open", () => {
@@ -15,6 +16,16 @@ app.use(
   graphqlHTTP(req => {
     return {
       schema: articlesSchema,
+      rootValue: { request: req }
+    };
+  })
+);
+
+app.use(
+  "/users",
+  graphqlHTTP(req => {
+    return {
+      schema: userSchema,
       rootValue: { request: req }
     };
   })

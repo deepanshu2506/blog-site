@@ -23,17 +23,26 @@ const Article = new GraphQLObjectType({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
     Content: { type: GraphQLList },
-    postedBy: { type: User },
+    postedBy: {
+      type: User,
+      async resolve(parent, args) {
+        /**
+         * return the author details from parent.authorId
+         */
+      }
+    },
     timeStamp: { type: String },
     likes: { type: GraphQLInt },
     comments: {
-      type: new GraphQLObjectType({
-        name: "comments",
-        fields: () => ({
-          comment: { type: GraphQLString },
-          commentedBy: { type: User }
+      type: new GraphQLList(
+        new GraphQLObjectType({
+          name: "comments",
+          fields: () => ({
+            comment: { type: GraphQLString },
+            commentedBy: { type: User }
+          })
         })
-      })
+      )
     }
   })
 });
@@ -41,7 +50,7 @@ const Article = new GraphQLObjectType({
 const rootQuery = new GraphQLObjectType({
   name: "articlesRootQuery",
   fields: {
-    article: {
+    getArticle: {
       type: Article,
       args: {
         id: { type: GraphQLID }
@@ -50,7 +59,7 @@ const rootQuery = new GraphQLObjectType({
         /**find article from db and return it*/
       }
     },
-    articles: {
+    getArticles: {
       type: GraphQLList(Article),
       args: {
         limit: { type: GraphQLInt },
@@ -129,7 +138,9 @@ const Mutation = new GraphQLObjectType({
           }
         }
 
-        /*save the blog data to database and return the status as passed or failed and also the article ID*/
+        /**save the blog data to database and return the status as passed or failed and also the article ID
+         * add authorId to the document
+         */
       }
     }
   }
@@ -140,5 +151,5 @@ module.exports = {
     query: rootQuery,
     mutation: Mutation
   }),
-  article: Article
+  Article
 };
