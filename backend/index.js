@@ -2,8 +2,8 @@ const express = require("express");
 const graphqlHTTP = require("express-graphql");
 const mongoose = require("mongoose");
 
-const articlesSchema = require("./schemas/articles").schema;
-const userSchema = require("./schemas/User").schema;
+const articlesSchema = require("./schemas/resolvers/articles");
+const userSchema = require("./schemas/resolvers/User");
 
 mongoose.connect("mongodb+srv://blog:blog123@cluster0-t1t7l.mongodb.net/blog");
 mongoose.connection.once("open", () => {
@@ -26,11 +26,12 @@ app.use(
   graphqlHTTP(req => {
     return {
       schema: userSchema,
-      rootValue: { request: req }
+      rootValue: { request: req },
+      graphiql: true
     };
   })
 );
 
-app.listen(process.env.port || 3000, () => {
-  console.log("Listening on port 3000");
+app.listen(process.env.PORT || 4000, () => {
+  console.log("Listening on port " + 4000);
 });
